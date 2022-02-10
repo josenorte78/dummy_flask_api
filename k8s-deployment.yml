@@ -1,0 +1,29 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: <app-name>-deployment
+  labels:
+    app: <app-name>
+spec:
+  replicas: 1
+  selector: 
+    matchLabels:
+      app: <app-name>
+  template:
+    metadata:
+      labels:
+        app: <app-name>
+    spec:
+      containers:
+      - name: <app-name>
+        image: feeds-emea.axadmin.net/docker/gdc_autoonline/ao-masstransit-redelivery-spike:<version>
+        resources:
+          requests:
+            memory: 256Mi
+            cpu: 250m
+          limits:
+            memory: 512Mi 
+            cpu: 500m        
+        ports:
+          - containerPort: 8085

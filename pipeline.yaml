@@ -1,0 +1,42 @@
+resources:
+- name: app-repo
+  type: git
+  icon: github
+  source:
+    uri: "https://github.com/HuseyinUtkuASLAN/dummy_flask_api.git"
+    branch: "master"
+
+jobs:
+- name: list-items-job
+  public: true
+  plan:
+  - get: app-repo
+    trigger: true
+  - task: list-files
+    config:
+      inputs:
+        - name: app-repo
+      platform: linux
+      image_resource:
+        type: registry-image
+        source: { repository: python }
+      run:
+        path: ls
+        args: ["-la", "app-repo"]
+
+- name: replace-and-echo
+  public: true
+  plan:
+  - get: app-repo
+    trigger: true
+  - task: replace-text
+    config:
+      inputs:
+        - name: app-repo
+      platform: linux
+      image_resource:
+        type: registry-image
+        source: { repository: python }
+      run:
+        path: python
+        args: ["app-repo", "/app-repo/replace-text-with-vars.py", "k8s-deployment.yml", "vars.yaml"]
