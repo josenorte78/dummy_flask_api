@@ -27,7 +27,9 @@ def replace_text(whole_text, params):
         text = text.replace(key, params[key])
     return text
 
-
+def write_to_file(text, file_name):
+    with open(file_name, 'w') as f:
+        f.write(text)
 
 if (__name__ == "__main__"):
     
@@ -38,3 +40,8 @@ if (__name__ == "__main__"):
     new_text = replace_text(original_text, variables)
 
     print(new_text)
+
+    write_to_file(new_text, sys.argv[3])
+    print('-------------')
+    print('---> New file created!')
+    print('-------------')
